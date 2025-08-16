@@ -110,39 +110,59 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="py-20 text-center">
+      <section id="home" className="py-20 relative overflow-hidden">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
-            ЛУЧШИЙ MINECRAFT СЕРВЕР
-          </h1>
-          <p className="text-xl md:text-2xl text-minecraft-white mb-8 animate-fade-in">
-            Поддержи сервер и получи эксклюзивные награды!
-          </p>
-          
-          {/* Server Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-              <div className="text-2xl font-bold text-white">{serverStats.online}</div>
-              <div className="text-minecraft-white text-sm">Онлайн</div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
+                ЛУЧШИЙ MINECRAFT СЕРВЕР
+              </h1>
+              <p className="text-xl md:text-2xl text-minecraft-white mb-8 animate-fade-in">
+                Поддержи сервер и получи эксклюзивные награды!
+              </p>
+              
+              {/* Server Stats */}
+              <div className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0 mb-8">
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                  <div className="text-2xl font-bold text-white">{serverStats.online}</div>
+                  <div className="text-minecraft-white text-sm">Онлайн</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                  <div className="text-2xl font-bold text-white">{serverStats.maxPlayers}</div>
+                  <div className="text-minecraft-white text-sm">Максимум</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                  <div className="text-2xl font-bold text-white">{serverStats.uptime}</div>
+                  <div className="text-minecraft-white text-sm">Аптайм</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                  <div className="text-2xl font-bold text-white">{serverStats.version}</div>
+                  <div className="text-minecraft-white text-sm">Версия</div>
+                </div>
+              </div>
+
+              <Button size="lg" className="bg-minecraft-darkGreen hover:bg-minecraft-darkGreen/90 text-white border-2 border-white">
+                <Icon name="Play" className="mr-2" size={20} />
+                Играть сейчас
+              </Button>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-              <div className="text-2xl font-bold text-white">{serverStats.maxPlayers}</div>
-              <div className="text-minecraft-white text-sm">Максимум</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-              <div className="text-2xl font-bold text-white">{serverStats.uptime}</div>
-              <div className="text-minecraft-white text-sm">Аптайм</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-              <div className="text-2xl font-bold text-white">{serverStats.version}</div>
-              <div className="text-minecraft-white text-sm">Версия</div>
+            
+            <div className="relative">
+              <div className="relative group">
+                <img
+                  src="https://cdn.poehali.dev/files/3eb09920-b1eb-4fe6-912b-18d21d845954.jpeg"
+                  alt="Minecraft аниме арт"
+                  className="w-full max-w-lg mx-auto rounded-2xl shadow-2xl animate-scale-in group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute -top-4 -right-4 bg-minecraft-green rounded-full p-3 animate-bounce">
+                  <Icon name="Heart" className="text-white" size={24} />
+                </div>
+                <div className="absolute -bottom-4 -left-4 bg-minecraft-darkGreen rounded-full p-3">
+                  <Icon name="Gamepad2" className="text-white" size={24} />
+                </div>
+              </div>
             </div>
           </div>
-
-          <Button size="lg" className="bg-minecraft-darkGreen hover:bg-minecraft-darkGreen/90 text-white border-2 border-white">
-            <Icon name="Play" className="mr-2" size={20} />
-            Играть сейчас
-          </Button>
         </div>
       </section>
 
