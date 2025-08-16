@@ -1,213 +1,199 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Icon from '@/components/ui/icon';
 
-const Index = () => {
+interface ServerStats {
+  online: number;
+  maxPlayers: number;
+  uptime: string;
+  version: string;
+}
+
+export default function Index() {
+  const [serverStats, setServerStats] = useState<ServerStats>({
+    online: 847,
+    maxPlayers: 1000,
+    uptime: '99.9%',
+    version: '1.20.1'
+  });
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const donationItems = [
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setServerStats(prev => ({
+        ...prev,
+        online: Math.floor(Math.random() * 100) + 800
+      }));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const packages = [
     {
-      id: 1,
-      title: "Алмазная кирка",
-      description: "Эффективность V, Неразрушимость III",
-      price: 150,
-      image: "/img/af9a564f-2f86-43e9-81fd-29bc5c9dca30.jpg",
-      category: "Инструменты",
-      popular: false
+      name: 'VIP',
+      price: '199₽',
+      originalPrice: '299₽',
+      features: ['Приват 100x100', 'Кит VIP', '50 монет', 'Цветной ник'],
+      popular: false,
+      color: 'from-minecraft-green to-minecraft-green-dark'
     },
     {
-      id: 2,
-      title: "VIP Статус",
-      description: "30 дней привилегий, особые команды",
-      price: 500,
-      image: "/img/15c04ff2-67e2-49c1-a964-17031eb9454d.jpg",
-      category: "Привилегии",
-      popular: true
+      name: 'PREMIUM',
+      price: '399₽',
+      originalPrice: '599₽',
+      features: ['Приват 200x200', 'Кит PREMIUM', '150 монет', 'Флай на спавне', 'Цветной ник'],
+      popular: true,
+      color: 'from-minecraft-gold to-yellow-600'
     },
     {
-      id: 3,
-      title: "1000 Изумрудов",
-      description: "Игровая валюта сервера",
-      price: 100,
-      image: "/img/4c4af836-4a1a-438d-bd23-b63b71a56087.jpg",
-      category: "Валюта",
-      popular: false
-    },
-    {
-      id: 4,
-      title: "Эндер-сундук",
-      description: "Персональное хранилище",
-      price: 75,
-      image: "/img/af9a564f-2f86-43e9-81fd-29bc5c9dca30.jpg",
-      category: "Хранилище",
-      popular: false
-    },
-    {
-      id: 5,
-      title: "Набор строителя",
-      description: "Полный набор блоков для строительства",
-      price: 200,
-      image: "/img/4c4af836-4a1a-438d-bd23-b63b71a56087.jpg",
-      category: "Наборы",
-      popular: false
-    },
-    {
-      id: 6,
-      title: "Элитра",
-      description: "Крылья для полёта",
-      price: 300,
-      image: "/img/15c04ff2-67e2-49c1-a964-17031eb9454d.jpg",
-      category: "Транспорт",
-      popular: true
+      name: 'ELITE',
+      price: '699₽',
+      originalPrice: '999₽',
+      features: ['Приват 300x300', 'Кит ELITE', '300 монет', 'Флай везде', 'Цветной ник', '/heal, /feed'],
+      popular: false,
+      color: 'from-minecraft-diamond to-blue-600'
     }
   ];
 
-  const serverStats = {
-    online: 247,
-    maxPlayers: 500,
-    uptime: "99.8%",
-    version: "1.20.4"
-  };
-
   return (
-    <div className="min-h-screen bg-dark-900 font-minecraft">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900">
       {/* Header */}
-      <header className="bg-dark-800/80 backdrop-blur-md border-b border-dark-700 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <header className="relative border-b border-gray-700/50 bg-gray-900/95 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">MC</span>
+              <div className="w-8 h-8 bg-minecraft-green rounded pixelated shadow-lg flex items-center justify-center">
+                <div className="w-4 h-4 bg-white rounded-sm"></div>
               </div>
-              <div>
-                <h1 className="text-white text-xl font-bold">MINECRAFT SERVER</h1>
-                <p className="text-dark-400 text-sm">Премиум донаты</p>
-              </div>
+              <span className="text-xl font-bold text-white font-minecraft">MineCraft Server</span>
             </div>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#home" className="text-dark-300 hover:text-white transition-colors relative group">
-                Главная
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-              </a>
-              <a href="#shop" className="text-dark-300 hover:text-white transition-colors relative group">
-                Магазин
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-              </a>
-              <a href="#download" className="text-dark-300 hover:text-white transition-colors relative group">
-                Скачать
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-              </a>
-              <Button className="bg-primary hover:bg-blue-600 text-white">
-                <Icon name="Play" className="mr-2" size={16} />
-                Играть
-              </Button>
+              <a href="#home" className="text-gray-300 hover:text-minecraft-green transition-colors">Главная</a>
+              <a href="#shop" className="text-gray-300 hover:text-minecraft-green transition-colors">Магазин</a>
+              <a href="#rules" className="text-gray-300 hover:text-minecraft-green transition-colors">Правила</a>
+              <a href="#contact" className="text-gray-300 hover:text-minecraft-green transition-colors">Контакты</a>
             </nav>
 
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-white hover:bg-dark-700">
-                    <Icon name="Menu" size={24} />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="bg-dark-800 border-dark-700">
-                  <nav className="flex flex-col space-y-6 mt-8">
-                    <a href="#home" className="text-dark-300 hover:text-white transition-colors py-2">Главная</a>
-                    <a href="#shop" className="text-dark-300 hover:text-white transition-colors py-2">Магазин</a>
-                    <a href="#download" className="text-dark-300 hover:text-white transition-colors py-2">Скачать</a>
-                    <Button className="bg-primary hover:bg-blue-600 text-white w-full">
-                      <Icon name="Play" className="mr-2" size={16} />
-                      Играть
-                    </Button>
-                  </nav>
-                </SheetContent>
-              </Sheet>
+            {/* Server Status */}
+            <div className="hidden lg:flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-1">
+              <div className="w-2 h-2 bg-minecraft-green rounded-full animate-pulse"></div>
+              <span className="text-minecraft-green text-sm font-medium">{serverStats.online} игроков онлайн</span>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
+            </button>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900 border-b border-gray-700 z-50">
+              <nav className="flex flex-col space-y-4 p-4">
+                <a href="#home" className="text-gray-300 hover:text-minecraft-green transition-colors">Главная</a>
+                <a href="#shop" className="text-gray-300 hover:text-minecraft-green transition-colors">Магазин</a>
+                <a href="#rules" className="text-gray-300 hover:text-minecraft-green transition-colors">Правила</a>
+                <a href="#contact" className="text-gray-300 hover:text-minecraft-green transition-colors">Контакты</a>
+                <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-2 self-start">
+                  <div className="w-2 h-2 bg-minecraft-green rounded-full animate-pulse"></div>
+                  <span className="text-minecraft-green text-sm font-medium">{serverStats.online} онлайн</span>
+                </div>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900"></div>
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-          <div className="absolute top-40 right-32 w-1 h-1 bg-blue-400 rounded-full animate-bounce"></div>
-          <div className="absolute bottom-32 left-16 w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></div>
+      <section id="home" className="relative py-20 lg:py-32 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2322C55E' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
         </div>
-        
-        <div className="container mx-auto px-4 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
-            <div className="text-center lg:text-left">
-              <div className="inline-flex items-center px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-6 animate-fade-in">
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                <span className="text-primary text-sm font-medium">{serverStats.online} игроков онлайн</span>
+
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            {/* Content */}
+            <div className="flex-1 text-center lg:text-left">
+              {/* Server Status Badge */}
+              <div className="inline-flex items-center space-x-2 bg-minecraft-green/20 border border-minecraft-green/30 rounded-full px-4 py-2 mb-6">
+                <div className="w-2 h-2 bg-minecraft-green rounded-full animate-pulse"></div>
+                <span className="text-minecraft-green text-sm font-medium">{serverStats.online} игроков онлайн</span>
               </div>
               
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in font-minecraft">
                 Лучший
-                <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent"> Minecraft </span>
+                <span className="bg-gradient-to-r from-minecraft-green to-minecraft-green-light bg-clip-text text-transparent block lg:inline"> Minecraft </span>
                 сервер
               </h1>
-              <p className="text-xl text-dark-300 mb-8 animate-fade-in leading-relaxed">
-                Поддержи сервер и получи эксклюзивные награды! Более 500 игроков каждый день.
+              <p className="text-xl text-gray-300 mb-8 animate-fade-in leading-relaxed max-w-2xl">
+                Присоединяйся к нашему сообществу! Выживание, мини-игры, кланы и многое другое. 
+                Поддержи сервер и получи крутые привилегии!
               </p>
               
-              {/* Server Stats */}
-              <div className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0 mb-8">
-                <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-4 border border-dark-700">
+              {/* Server Stats Grid */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-2xl mx-auto lg:mx-0 mb-8">
+                <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-gray-700 text-center">
                   <div className="text-2xl font-bold text-white">{serverStats.online}</div>
-                  <div className="text-dark-400 text-sm">Онлайн</div>
+                  <div className="text-gray-400 text-sm">Онлайн</div>
                 </div>
-                <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-4 border border-dark-700">
+                <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-gray-700 text-center">
                   <div className="text-2xl font-bold text-white">{serverStats.maxPlayers}</div>
-                  <div className="text-dark-400 text-sm">Максимум</div>
+                  <div className="text-gray-400 text-sm">Слотов</div>
                 </div>
-                <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-4 border border-dark-700">
-                  <div className="text-2xl font-bold text-primary">{serverStats.uptime}</div>
-                  <div className="text-dark-400 text-sm">Аптайм</div>
+                <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-gray-700 text-center">
+                  <div className="text-2xl font-bold text-minecraft-green">{serverStats.uptime}</div>
+                  <div className="text-gray-400 text-sm">Аптайм</div>
                 </div>
-                <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-4 border border-dark-700">
+                <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-gray-700 text-center">
                   <div className="text-2xl font-bold text-white">{serverStats.version}</div>
-                  <div className="text-dark-400 text-sm">Версия</div>
+                  <div className="text-gray-400 text-sm">Версия</div>
                 </div>
               </div>
 
+              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" className="bg-primary hover:bg-blue-600 text-white shadow-lg shadow-primary/25">
+                <Button size="lg" className="bg-minecraft-green hover:bg-minecraft-green-dark text-white shadow-lg shadow-minecraft-green/25 border-2 border-minecraft-green-light pixelated">
                   <Icon name="Play" className="mr-2" size={20} />
                   Играть сейчас
                 </Button>
-                <Button size="lg" variant="outline" className="border-dark-600 text-dark-300 hover:bg-dark-800 hover:text-white">
+                <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white pixelated">
                   <Icon name="Download" className="mr-2" size={20} />
-                  Скачать клиент
+                  IP: play.server.ru
                 </Button>
               </div>
             </div>
             
-            <div className="relative">
+            {/* Hero Image */}
+            <div className="flex-1 max-w-lg lg:max-w-none">
               <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 rounded-3xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
-                <div className="absolute -inset-2 bg-gradient-to-br from-slate-400/10 to-cyan-400/10 rounded-2xl"></div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-minecraft-green/20 to-minecraft-green-light/20 rounded-3xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                <div className="absolute -inset-2 bg-gradient-to-br from-gray-400/10 to-minecraft-green/10 rounded-2xl"></div>
                 <img
-                  src="https://cdn.poehali.dev/files/28e3a185-7301-4b80-aae9-b5e39c051693.png"
-                  alt="Аниме девочка"
-                  className="relative w-full max-w-lg mx-auto rounded-2xl shadow-2xl animate-scale-in group-hover:scale-[1.02] transition-transform duration-500 border border-slate-600/30"
+                  src={`/img/c8b822ed-a2bb-4d09-8336-0ebde2ea1bf8.jpg`}
+                  alt="Minecraft Character"
+                  className="relative w-full max-w-lg mx-auto rounded-2xl shadow-2xl animate-scale-in group-hover:scale-[1.02] transition-transform duration-500 border border-gray-600/30 pixelated"
                 />
-                <div className="absolute -top-4 -right-4 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full p-3 animate-pulse shadow-lg shadow-cyan-400/30">
+                <div className="absolute -top-4 -right-4 bg-gradient-to-r from-minecraft-green to-minecraft-green-light rounded-lg p-3 animate-pulse shadow-lg shadow-minecraft-green/30 pixelated">
                   <Icon name="Sparkles" className="text-white" size={24} />
                 </div>
-                <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full p-3 shadow-lg">
-                  <Icon name="Star" className="text-cyan-300" size={24} />
+                <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-gray-600 to-gray-700 rounded-lg p-3 shadow-lg pixelated">
+                  <Icon name="Gamepad2" className="text-minecraft-green" size={24} />
                 </div>
-                <div className="absolute top-1/2 -left-8 w-2 h-2 bg-cyan-400 rounded-full animate-ping"></div>
-                <div className="absolute top-1/4 -right-6 w-1 h-1 bg-blue-400 rounded-full animate-bounce delay-300"></div>
+                {/* Floating Pixels */}
+                <div className="absolute top-1/2 -left-8 w-2 h-2 bg-minecraft-green rounded-sm animate-ping pixelated"></div>
+                <div className="absolute top-1/4 -right-6 w-1 h-1 bg-minecraft-green-light rounded-sm animate-bounce delay-300 pixelated"></div>
+                <div className="absolute bottom-1/3 -left-4 w-1 h-1 bg-minecraft-gold rounded-sm animate-pulse delay-500 pixelated"></div>
               </div>
             </div>
           </div>
@@ -215,211 +201,188 @@ const Index = () => {
       </section>
 
       {/* Donation Shop */}
-      <section id="shop" className="py-20 bg-dark-800/50">
+      <section id="shop" className="py-20 bg-gray-800/30 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-minecraft">
               Премиум магазин
             </h2>
-            <p className="text-xl text-dark-300 max-w-2xl mx-auto">
-              Поддержи сервер и получи эксклюзивные предметы и привилегии
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Поддержи сервер и получи эксклюзивные привилегии! Все донаты идут на развитие проекта.
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {donationItems.map((item) => (
-              <Card key={item.id} className="bg-dark-800/80 border-dark-700 hover:border-primary/50 transition-all duration-300 hover:scale-105 group relative overflow-hidden">
-                {item.popular && (
-                  <div className="absolute top-4 right-4 z-10">
-                    <Badge className="bg-gradient-to-r from-primary to-blue-600 text-white border-0">
-                      Популярное
-                    </Badge>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <div key={index} className={`relative bg-gray-900/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-minecraft-green/50 transition-all duration-300 group ${pkg.popular ? 'scale-105 border-minecraft-green' : ''}`}>
+                {pkg.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-minecraft-green to-minecraft-green-light text-white px-4 py-1 rounded-full text-sm font-bold pixelated">
+                      ПОПУЛЯРНЫЙ
+                    </span>
                   </div>
                 )}
                 
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                
-                <CardHeader className="pb-3 relative">
-                  <div className="flex justify-between items-start mb-4">
-                    <Badge variant="secondary" className="bg-dark-700 text-dark-200 border-dark-600">
-                      {item.category}
-                    </Badge>
-                    <div className="text-right">
-                      <span className="text-3xl font-bold text-white">{item.price}</span>
-                      <span className="text-primary text-lg">₽</span>
-                    </div>
+                <div className="text-center mb-6">
+                  <h3 className="text-2xl font-bold text-white mb-2 font-minecraft">{pkg.name}</h3>
+                  <div className="flex items-center justify-center space-x-2">
+                    <span className="text-3xl font-bold text-minecraft-green">{pkg.price}</span>
+                    <span className="text-lg text-gray-400 line-through">{pkg.originalPrice}</span>
                   </div>
-                  
-                  <div className="flex justify-center mb-4">
-                    <div className="w-20 h-20 bg-dark-700 rounded-xl flex items-center justify-center group-hover:bg-dark-600 transition-colors">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-16 h-16 pixelated"
-                      />
-                    </div>
-                  </div>
-                  
-                  <CardTitle className="text-white text-xl mb-2">{item.title}</CardTitle>
-                  <CardDescription className="text-dark-400 leading-relaxed">
-                    {item.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button className="w-full bg-primary hover:bg-blue-600 text-white shadow-lg shadow-primary/25">
-                    <Icon name="ShoppingCart" className="mr-2" size={16} />
-                    Купить сейчас
-                  </Button>
-                </CardContent>
-              </Card>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  {pkg.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center text-gray-300">
+                      <Icon name="Check" className="text-minecraft-green mr-3 flex-shrink-0" size={20} />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <Button 
+                  className={`w-full bg-gradient-to-r ${pkg.color} text-white hover:scale-105 transition-transform shadow-lg pixelated border-2 border-white/20`}
+                  size="lg"
+                >
+                  <Icon name="ShoppingCart" className="mr-2" size={20} />
+                  Купить {pkg.name}
+                </Button>
+              </div>
+            ))}
+          </div>
+
+          {/* Payment Methods */}
+          <div className="text-center mt-12">
+            <p className="text-gray-400 mb-4">Способы оплаты:</p>
+            <div className="flex justify-center items-center space-x-6 flex-wrap gap-4">
+              <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-4 py-2">
+                <Icon name="CreditCard" className="text-minecraft-green" size={20} />
+                <span className="text-white text-sm">Банковская карта</span>
+              </div>
+              <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-4 py-2">
+                <Icon name="Smartphone" className="text-minecraft-green" size={20} />
+                <span className="text-white text-sm">СБП</span>
+              </div>
+              <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-4 py-2">
+                <Icon name="Wallet" className="text-minecraft-green" size={20} />
+                <span className="text-white text-sm">Электронные кошельки</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-minecraft">
+              Особенности сервера
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Уникальные возможности, которые сделают твою игру незабываемой
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "Sword",
+                title: "PvP Арены",
+                description: "Сражайся с другими игроками на специальных аренах с уникальными правилами"
+              },
+              {
+                icon: "Home",
+                title: "Приваты",
+                description: "Защити свою территорию от грифферов. Различные размеры приватов для каждого статуса"
+              },
+              {
+                icon: "Users",
+                title: "Кланы",
+                description: "Создавай кланы, объявляй войны, захватывай территории и сражайся за господство"
+              },
+              {
+                icon: "Gem",
+                title: "Уникальные предметы",
+                description: "Эксклюзивные предметы и материалы, которых нет в ванильном Minecraft"
+              },
+              {
+                icon: "Trophy",
+                title: "Достижения",
+                description: "Система достижений с наградами. Покажи всем свои успехи!"
+              },
+              {
+                icon: "Zap",
+                title: "Мини-игры",
+                description: "BedWars, SkyWars, BuildBattle и многие другие захватывающие мини-игры"
+              }
+            ].map((feature, index) => (
+              <div key={index} className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-minecraft-green/50 transition-all duration-300 group">
+                <div className="w-12 h-12 bg-minecraft-green/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-minecraft-green/30 transition-colors pixelated">
+                  <Icon name={feature.icon as any} className="text-minecraft-green" size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3 font-minecraft">{feature.title}</h3>
+                <p className="text-gray-300 leading-relaxed">{feature.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Download Section */}
-      <section id="download" className="py-20 bg-dark-900">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-            Скачать клиент
-          </h2>
-          <p className="text-xl text-dark-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Скачай наш оптимизированный клиент для лучшего игрового опыта. 
-            Стабильное подключение и улучшенная производительность.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
-            <Card className="bg-dark-800 border-dark-700 hover:border-primary/50 transition-all group">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-xl mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Icon name="Monitor" className="text-white" size={32} />
-                </div>
-                <CardTitle className="text-white text-2xl">Windows</CardTitle>
-                <CardDescription className="text-dark-400">Для Windows 10/11</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full bg-primary hover:bg-blue-600 text-white shadow-lg shadow-primary/25">
-                  <Icon name="Download" className="mr-2" size={16} />
-                  Скачать .exe
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-dark-800 border-dark-700 hover:border-primary/50 transition-all group">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Icon name="Smartphone" className="text-white" size={32} />
-                </div>
-                <CardTitle className="text-white text-2xl">Android</CardTitle>
-                <CardDescription className="text-dark-400">Для Android устройств</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25">
-                  <Icon name="Download" className="mr-2" size={16} />
-                  Скачать .apk
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-dark-800/50 backdrop-blur-sm rounded-2xl p-8 border border-dark-700">
-              <h3 className="text-2xl font-bold text-white mb-4">IP сервера</h3>
-              <div className="bg-dark-900 rounded-xl p-4 border border-dark-600">
-                <p className="text-2xl font-mono text-primary bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-                  play.minecraft-server.ru
-                </p>
-              </div>
-              <div className="flex justify-center mt-4">
-                <Button variant="outline" className="border-dark-600 text-dark-300 hover:bg-dark-700 hover:text-white">
-                  <Icon name="Copy" className="mr-2" size={16} />
-                  Копировать IP
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="bg-dark-900 border-t border-dark-800 py-16">
+      <footer className="bg-gray-900 border-t border-gray-700 py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">MC</span>
+                <div className="w-8 h-8 bg-minecraft-green rounded pixelated shadow-lg flex items-center justify-center">
+                  <div className="w-4 h-4 bg-white rounded-sm"></div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">Minecraft Server</h3>
-                  <p className="text-dark-400">Премиум игровой опыт</p>
-                </div>
+                <span className="text-xl font-bold text-white font-minecraft">MineCraft Server</span>
               </div>
-              <p className="text-dark-400 leading-relaxed max-w-md">
-                Лучший игровой опыт для всех любителей Minecraft. 
-                Стабильный сервер с постоянными обновлениями и активным сообществом.
+              <p className="text-gray-400 mb-4">
+                Лучший Minecraft сервер в России. Присоединяйся к нашему сообществу и начни свое приключение!
               </p>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-bold text-white mb-4">Навигация</h3>
-              <div className="space-y-3">
-                <a href="#rules" className="block text-dark-400 hover:text-primary transition-colors">
-                  Правила сервера
-                </a>
-                <a href="#support" className="block text-dark-400 hover:text-primary transition-colors">
-                  Техподдержка
-                </a>
-                <a href="#forum" className="block text-dark-400 hover:text-primary transition-colors">
-                  Форум
-                </a>
-                <a href="#wiki" className="block text-dark-400 hover:text-primary transition-colors">
-                  Wiki
-                </a>
+              <div className="flex space-x-4">
+                <Button variant="outline" size="sm" className="border-gray-600 text-gray-400 hover:text-white pixelated">
+                  <Icon name="MessageCircle" size={16} />
+                </Button>
+                <Button variant="outline" size="sm" className="border-gray-600 text-gray-400 hover:text-white pixelated">
+                  <Icon name="Youtube" size={16} />
+                </Button>
+                <Button variant="outline" size="sm" className="border-gray-600 text-gray-400 hover:text-white pixelated">
+                  <Icon name="Users" size={16} />
+                </Button>
               </div>
             </div>
             
             <div>
-              <h3 className="text-lg font-bold text-white mb-4">Социальные сети</h3>
-              <div className="flex space-x-3">
-                <Button variant="ghost" size="icon" className="text-dark-400 hover:text-primary hover:bg-dark-800 rounded-xl">
-                  <Icon name="MessageCircle" size={20} />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-dark-400 hover:text-red-500 hover:bg-dark-800 rounded-xl">
-                  <Icon name="Youtube" size={20} />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-dark-400 hover:text-blue-500 hover:bg-dark-800 rounded-xl">
-                  <Icon name="Users" size={20} />
-                </Button>
-              </div>
-              
-              <div className="mt-6">
-                <h4 className="text-sm font-semibold text-white mb-2">Статистика</h4>
-                <div className="text-sm text-dark-400">
-                  <p>Игроков: <span className="text-primary font-semibold">{serverStats.online}</span></p>
-                  <p>Аптайм: <span className="text-green-400 font-semibold">{serverStats.uptime}</span></p>
-                </div>
+              <h4 className="text-white font-bold mb-4 font-minecraft">Полезные ссылки</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-minecraft-green transition-colors">Правила сервера</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-minecraft-green transition-colors">Карта мира</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-minecraft-green transition-colors">Форум</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-minecraft-green transition-colors">Discord</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-bold mb-4 font-minecraft">Подключение</h4>
+              <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                <p className="text-gray-400 text-sm mb-2">IP адрес сервера:</p>
+                <p className="text-minecraft-green font-mono text-lg font-bold">play.server.ru</p>
+                <p className="text-gray-400 text-sm mt-2">Версия: {serverStats.version}</p>
               </div>
             </div>
           </div>
           
-          <div className="border-t border-dark-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-dark-500 text-sm">
-              © 2024 Minecraft Server. Все права защищены.
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+            <p className="text-gray-400">
+              © 2024 MineCraft Server. Все права защищены. Этот сервер не связан с Mojang Studios.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#privacy" className="text-dark-500 hover:text-primary text-sm transition-colors">
-                Политика конфиденциальности
-              </a>
-              <a href="#terms" className="text-dark-500 hover:text-primary text-sm transition-colors">
-                Условия использования
-              </a>
-            </div>
           </div>
         </div>
       </footer>
     </div>
   );
-};
-
-export default Index;
+}

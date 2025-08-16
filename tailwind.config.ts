@@ -28,8 +28,19 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#06B6D4',
+					DEFAULT: '#22C55E',
 					foreground: '#FFFFFF'
+				},
+				minecraft: {
+					green: '#22C55E',
+					'green-light': '#4ADE80',
+					'green-dark': '#16A34A',
+					grass: '#3B7F3C',
+					stone: '#7F7F7F',
+					coal: '#2A2A2A',
+					diamond: '#5DADE2',
+					gold: '#F1C40F',
+					redstone: '#E74C3C'
 				},
 				secondary: {
 					DEFAULT: '#374151',
