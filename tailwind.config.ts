@@ -28,39 +28,44 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#4CAF50',
+					DEFAULT: '#3B82F6',
 					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: '#2E7D32',
-					foreground: '#FFFFFF'
+					DEFAULT: '#374151',
+					foreground: '#F9FAFB'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
 				muted: {
-					DEFAULT: '#81C784',
-					foreground: '#2E7D32'
+					DEFAULT: '#6B7280',
+					foreground: '#F9FAFB'
 				},
 				accent: {
-					DEFAULT: '#81C784',
-					foreground: '#212121'
+					DEFAULT: '#3B82F6',
+					foreground: '#FFFFFF'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
 				card: {
-					DEFAULT: '#FFFFFF',
-					foreground: '#212121'
+					DEFAULT: '#1F2937',
+					foreground: '#F9FAFB'
 				},
-				minecraft: {
-					green: '#4CAF50',
-					darkGreen: '#2E7D32',
-					lightGreen: '#81C784',
-					gray: '#81C784',
-					white: '#FFFFFF',
+				dark: {
+					900: '#0F172A',
+					800: '#1E293B',
+					700: '#334155',
+					600: '#475569',
+					500: '#64748B',
+					400: '#94A3B8',
+					300: '#CBD5E1',
+					200: '#E2E8F0',
+					100: '#F1F5F9',
+					50: '#F8FAFC'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
