@@ -193,18 +193,21 @@ const Index = () => {
             
             <div className="relative">
               <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary to-blue-600 rounded-3xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
+                <div className="absolute -inset-4 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 rounded-3xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                <div className="absolute -inset-2 bg-gradient-to-br from-slate-400/10 to-cyan-400/10 rounded-2xl"></div>
                 <img
-                  src="https://cdn.poehali.dev/files/3eb09920-b1eb-4fe6-912b-18d21d845954.jpeg"
-                  alt="Minecraft аниме арт"
-                  className="relative w-full max-w-lg mx-auto rounded-2xl shadow-2xl animate-scale-in group-hover:scale-[1.02] transition-transform duration-500"
+                  src="https://cdn.poehali.dev/files/28e3a185-7301-4b80-aae9-b5e39c051693.png"
+                  alt="Аниме девочка"
+                  className="relative w-full max-w-lg mx-auto rounded-2xl shadow-2xl animate-scale-in group-hover:scale-[1.02] transition-transform duration-500 border border-slate-600/30"
                 />
-                <div className="absolute -top-4 -right-4 bg-gradient-to-r from-red-500 to-pink-500 rounded-full p-3 animate-bounce shadow-lg">
-                  <Icon name="Heart" className="text-white" size={24} />
+                <div className="absolute -top-4 -right-4 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full p-3 animate-pulse shadow-lg shadow-cyan-400/30">
+                  <Icon name="Sparkles" className="text-white" size={24} />
                 </div>
-                <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-primary to-blue-600 rounded-full p-3 shadow-lg">
-                  <Icon name="Gamepad2" className="text-white" size={24} />
+                <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full p-3 shadow-lg">
+                  <Icon name="Star" className="text-cyan-300" size={24} />
                 </div>
+                <div className="absolute top-1/2 -left-8 w-2 h-2 bg-cyan-400 rounded-full animate-ping"></div>
+                <div className="absolute top-1/4 -right-6 w-1 h-1 bg-blue-400 rounded-full animate-bounce delay-300"></div>
               </div>
             </div>
           </div>
