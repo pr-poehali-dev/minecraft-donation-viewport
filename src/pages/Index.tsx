@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 interface ServerStats {
   online: number;
@@ -18,6 +22,9 @@ export default function Index() {
   });
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<any>(null);
+  const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({ nickname: '', promocode: '' });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,7 +42,16 @@ export default function Index() {
       name: 'VIP',
       price: '199₽',
       originalPrice: '299₽',
-      features: ['Приват 100x100', 'Кит VIP', '50 монет', 'Цветной ник'],
+      features: [
+        'Приват территории 100x100 блоков',
+        'Доступ к VIP киту с алмазной броней и инструментами',
+        '50 игровых монет для покупок в магазине',
+        'Цветной ник в чате для выделения среди игроков',
+        'Приоритетный вход на сервер при полной загрузке',
+        'Доступ к VIP зонам и эксклюзивным локациям'
+      ],
+      shortFeatures: ['Приват 100x100', 'Кит VIP', '50 монет', 'Цветной ник'],
+      description: 'VIP статус предоставляет базовые привилегии для комфортной игры. Идеально подходит для новичков, которые хотят получить преимущества без больших трат.',
       popular: false,
       color: 'from-minecraft-green to-minecraft-green-dark'
     },
@@ -43,7 +59,18 @@ export default function Index() {
       name: 'PREMIUM',
       price: '399₽',
       originalPrice: '599₽',
-      features: ['Приват 200x200', 'Кит PREMIUM', '150 монет', 'Флай на спавне', 'Цветной ник'],
+      features: [
+        'Приват территории 200x200 блоков для больших построек',
+        'Доступ к PREMIUM киту с незеритовым снаряжением',
+        '150 игровых монет для расширенных покупок',
+        'Возможность полета на спавне для удобного перемещения',
+        'Цветной ник с уникальными символами',
+        'Команда /sethome до 5 точек телепортации',
+        'Доступ к PREMIUM зонам и эксклюзивным ресурсам',
+        'Скидка 20% в игровом магазине'
+      ],
+      shortFeatures: ['Приват 200x200', 'Кит PREMIUM', '150 монет', 'Флай на спавне'],
+      description: 'PREMIUM статус - золотая середина между ценой и возможностями. Включает расширенные привилегии для серьезных игроков.',
       popular: true,
       color: 'from-minecraft-gold to-yellow-600'
     },
@@ -51,7 +78,20 @@ export default function Index() {
       name: 'ELITE',
       price: '699₽',
       originalPrice: '999₽',
-      features: ['Приват 300x300', 'Кит ELITE', '300 монет', 'Флай везде', 'Цветной ник', '/heal, /feed'],
+      features: [
+        'Максимальный приват территории 300x300 блоков',
+        'ELITE кит с уникальными зачарованными предметами',
+        '300 игровых монет для неограниченных покупок',
+        'Полет в любой точке сервера без ограничений',
+        'Уникальный цветной ник с анимацией',
+        'Команды /heal и /feed для мгновенного восстановления',
+        'Команда /sethome до 10 точек телепортации',
+        'Доступ ко всем ELITE зонам и секретным локациям',
+        'Скидка 35% в игровом магазине',
+        'Приоритетная техническая поддержка 24/7'
+      ],
+      shortFeatures: ['Приват 300x300', 'Кит ELITE', '300 монет', 'Флай везде'],
+      description: 'ELITE статус - максимальный уровень привилегий на сервере. Включает все возможные преимущества для профессиональных игроков.',
       popular: false,
       color: 'from-minecraft-diamond to-blue-600'
     }
@@ -60,7 +100,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-900">
       {/* Header */}
-      <header className="relative border-b border-gray-700/50 bg-gray-900/95 backdrop-blur-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-700/50 bg-gray-900/95 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -96,12 +136,36 @@ export default function Index() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900 border-b border-gray-700 z-50">
+            <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900/98 border-b border-gray-700 z-50 backdrop-blur-sm">
               <nav className="flex flex-col space-y-4 p-4">
-                <a href="#home" className="text-gray-300 hover:text-minecraft-green transition-colors">Главная</a>
-                <a href="#shop" className="text-gray-300 hover:text-minecraft-green transition-colors">Магазин</a>
-                <a href="#rules" className="text-gray-300 hover:text-minecraft-green transition-colors">Правила</a>
-                <a href="#contact" className="text-gray-300 hover:text-minecraft-green transition-colors">Контакты</a>
+                <a 
+                  href="#home" 
+                  className="text-gray-300 hover:text-minecraft-green transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Главная
+                </a>
+                <a 
+                  href="#shop" 
+                  className="text-gray-300 hover:text-minecraft-green transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Магазин
+                </a>
+                <a 
+                  href="#rules" 
+                  className="text-gray-300 hover:text-minecraft-green transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Правила
+                </a>
+                <a 
+                  href="#contact" 
+                  className="text-gray-300 hover:text-minecraft-green transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Контакты
+                </a>
                 <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-2 self-start">
                   <div className="w-2 h-2 bg-minecraft-green rounded-full animate-pulse"></div>
                   <span className="text-minecraft-green text-sm font-medium">{serverStats.online} онлайн</span>
@@ -109,11 +173,19 @@ export default function Index() {
               </nav>
             </div>
           )}
+          
+          {/* Mobile Menu Overlay */}
+          {mobileMenuOpen && (
+            <div 
+              className="md:hidden fixed inset-0 bg-black/50 z-40" 
+              onClick={() => setMobileMenuOpen(false)}
+            />
+          )}
         </div>
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="relative py-20 lg:py-32 overflow-hidden">
+      <section id="home" className="relative py-20 lg:py-32 overflow-hidden mt-16">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -232,7 +304,7 @@ export default function Index() {
                 </div>
 
                 <ul className="space-y-3 mb-8">
-                  {pkg.features.map((feature, idx) => (
+                  {pkg.shortFeatures.map((feature, idx) => (
                     <li key={idx} className="flex items-center text-gray-300">
                       <Icon name="Check" className="text-minecraft-green mr-3 flex-shrink-0" size={20} />
                       {feature}
@@ -243,6 +315,10 @@ export default function Index() {
                 <Button 
                   className={`w-full bg-gradient-to-r ${pkg.color} text-white hover:scale-105 transition-transform shadow-lg pixelated border-2 border-white/20`}
                   size="lg"
+                  onClick={() => {
+                    setSelectedPackage(pkg);
+                    setPurchaseDialogOpen(true);
+                  }}
                 >
                   <Icon name="ShoppingCart" className="mr-2" size={20} />
                   Купить {pkg.name}
@@ -383,6 +459,111 @@ export default function Index() {
           </div>
         </div>
       </footer>
+      
+      {/* Purchase Dialog */}
+      <Dialog open={purchaseDialogOpen} onOpenChange={setPurchaseDialogOpen}>
+        <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-minecraft text-minecraft-green">
+              Покупка привилегии {selectedPackage?.name}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedPackage && (
+            <div className="space-y-6">
+              {/* Package Info */}
+              <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold text-white">{selectedPackage.name}</h3>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-2xl font-bold text-minecraft-green">{selectedPackage.price}</span>
+                    <span className="text-gray-400 line-through">{selectedPackage.originalPrice}</span>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm mb-4">{selectedPackage.description}</p>
+              </div>
+              
+              {/* Full Features List */}
+              <div>
+                <h4 className="font-bold text-white mb-3 font-minecraft">Все возможности:</h4>
+                <div className="bg-gray-800 rounded-lg p-4 border border-gray-700 max-h-60 overflow-y-auto">
+                  <ul className="space-y-2">
+                    {selectedPackage.features.map((feature: string, idx: number) => (
+                      <li key={idx} className="flex items-start text-gray-300 text-sm">
+                        <Icon name="Check" className="text-minecraft-green mr-2 flex-shrink-0 mt-0.5" size={16} />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Purchase Form */}
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="nickname" className="text-white font-medium">Игровой ник *</Label>
+                  <Input 
+                    id="nickname"
+                    placeholder="Введите ваш игровой ник"
+                    value={formData.nickname}
+                    onChange={(e) => setFormData(prev => ({ ...prev, nickname: e.target.value }))}
+                    className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="promocode" className="text-white font-medium">Промокод (необязательно)</Label>
+                  <Input 
+                    id="promocode"
+                    placeholder="Введите промокод для скидки"
+                    value={formData.promocode}
+                    onChange={(e) => setFormData(prev => ({ ...prev, promocode: e.target.value }))}
+                    className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
+                  />
+                </div>
+              </div>
+              
+              {/* Payment Methods */}
+              <div>
+                <h4 className="font-bold text-white mb-3 font-minecraft">Способы оплаты:</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-2 border border-gray-600">
+                    <Icon name="CreditCard" className="text-minecraft-green" size={16} />
+                    <span className="text-white text-sm">Карта</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-2 border border-gray-600">
+                    <Icon name="Smartphone" className="text-minecraft-green" size={16} />
+                    <span className="text-white text-sm">СБП</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-2 border border-gray-600">
+                    <Icon name="Wallet" className="text-minecraft-green" size={16} />
+                    <span className="text-white text-sm">Кошелек</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Purchase Button */}
+              <Button 
+                className={`w-full bg-gradient-to-r ${selectedPackage.color} text-white text-lg py-6 pixelated border-2 border-white/20`}
+                disabled={!formData.nickname.trim()}
+                onClick={() => {
+                  // Handle purchase logic here
+                  alert(`Покупка ${selectedPackage.name} для игрока ${formData.nickname}`);
+                  setPurchaseDialogOpen(false);
+                  setFormData({ nickname: '', promocode: '' });
+                }}
+              >
+                <Icon name="ShoppingCart" className="mr-2" size={20} />
+                Купить за {selectedPackage.price}
+              </Button>
+              
+              <p className="text-xs text-gray-400 text-center">
+                После оплаты привилегия будет выдана автоматически в течение 5 минут
+              </p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
